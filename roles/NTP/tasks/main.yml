@@ -1,0 +1,22 @@
+- name: Ensure Chrony is installed on Ubuntu
+  apt:
+    name: chrony
+    state: latest
+
+- replace:
+    dest: /etc/chrony/chrony.conf
+    regexp: server NTP_SERVER iburst
+    replace: server 192.168.56.113 iburst
+    backup: yes
+
+- name: Allow access to Chrony from specified network
+  ansible.builtin.lineinfile:
+    dest: /etc/chrony/chrony.conf
+    line: allow 10.0.0.0/24
+    backup: yes
+
+- name: Restart Chrony service for changes to take effect
+  service:
+    name: chrony
+    state: restarted
+    enabled: true

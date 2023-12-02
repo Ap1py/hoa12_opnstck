@@ -1,0 +1,6 @@
+- name: Ensure OpenStack components are installed on Ubuntu
+  apt:
+    name:
+      - nova-compute
+      - python3-openstackclient
+    state: latest

@@ -1,0 +1,26 @@
+---
+- hosts: all
+  become: true
+  pre_tasks:
+
+  - name: install updates Ubuntu
+    apt:
+      update_cache: yes
+      upgrade: dist
+    changed_when: false
+
+  - name: Repair dpkg issues for Ubuntu
+    command: dpkg --configure -a
+    when: ansible_distribution == "Ubuntu"
+
+- hosts: Ubuntu
+  become: true
+  roles:
+    - roles/NTP
+    - roles/openstack
+    - roles/SQL
+    - roles/MQ
+    - roles/memc
+    - roles/etcd
+
+
